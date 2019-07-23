@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 
+const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -20,7 +21,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name][contenthash].js'
+    filename: 'static/[name][contenthash].js'
   },
   module: {
     rules: [
@@ -65,7 +66,13 @@ module.exports = {
     new CleanWebpackPlugin(),
     ...generateHTMLPlugins(),
     new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css'
-    })
+      filename: 'static/style.[contenthash].css'
+    }),
+    new CopyPlugin([
+      {
+        from: './src/static/favicon.ico',
+        to: './static/favicon.ico'
+      }
+    ])
   ]
 };
